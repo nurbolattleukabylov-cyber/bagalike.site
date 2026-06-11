@@ -6,103 +6,208 @@
     <title>BAGALAU - Онлайн Журнал</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        body { background-color: #e8f4fd; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .container { width: 100%; max-width: 600px; text-align: center; }
-        h1.logo { color: #0066cc; font-size: 42px; font-weight: 900; letter-spacing: 4px; margin-bottom: 30px; text-transform: uppercase; }
-        .card { background: #ffffff; border-radius: 24px; padding: 40px 30px; box-shadow: 0 10px 30px rgba(0, 102, 204, 0.1); position: relative; }
-        h2.title { color: #0056b3; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-        p.subtitle { color: #7f8c8d; font-size: 14px; margin-bottom: 35px; }
-        .btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 16px; background: #f0f7ff; border: 2px solid #e1f0ff; border-radius: 16px; color: #0066cc; font-size: 18px; font-weight: 700; cursor: pointer; margin-bottom: 16px; transition: all 0.3s ease; }
-        .btn:hover { background: #e1f0ff; transform: translateY(-2px); }
-        .btn-primary { background: #0066cc; color: white; border: none; }
-        .btn-primary:hover { background: #0052a3; }
-        .btn-danger { background: #fff0f0; color: #e74c3c; border: 2px solid #ffdede; margin-top: 20px; }
-        .btn-save-all { background: #2ecc71; color: white; border: none; font-size: 16px; font-weight: bold; margin-top: 20px; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3); }
+        * { box-sizing: border-box; font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif; margin: 0; padding: 0; }
+        
+        body { 
+            background: linear-gradient(135deg, #eef5fc 0%, #dbe9f9 100%); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+            color: #2c3e50;
+        }
+
+        .container { width: 100%; max-width: 650px; text-align: center; transition: max-width 0.3s ease; }
+        /* Егер мұғалім журналы ашылса, контейнерді экран бойымен кеңейтеміз */
+        .container.wide { max-width: 1200px; }
+
+        h1.logo { 
+            color: #1e62d0; 
+            font-size: 38px; 
+            font-weight: 800; 
+            letter-spacing: 6px; 
+            margin-bottom: 25px; 
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(30,98,208,0.1);
+        }
+
+        .card { 
+            background: #ffffff; 
+            border-radius: 24px; 
+            padding: 35px; 
+            box-shadow: 0 15px 35px rgba(30, 98, 208, 0.08); 
+            position: relative; 
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        h2.title { color: #1a4da1; font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        p.subtitle { color: #7a8b9a; font-size: 14px; margin-bottom: 30px; }
+
+        /* Стильді Батырмалар */
+        .btn { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 100%; 
+            padding: 16px; 
+            background: #f4f8fd; 
+            border: 2px solid #e1eefa; 
+            border-radius: 14px; 
+            color: #1e62d0; 
+            font-size: 17px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            margin-bottom: 15px; 
+            transition: all 0.25s ease; 
+        }
+        .btn:hover { background: #e6f1fc; border-color: #cbdff5; transform: translateY(-2px); }
+        .btn-primary { background: #1e62d0; color: white; border: none; box-shadow: 0 4px 12px rgba(30,62,208,0.2); }
+        .btn-primary:hover { background: #154eb5; transform: translateY(-2px); }
+        .btn-danger { background: #fff1f1; color: #e74c3c; border: 2px solid #ffd9d9; margin-top: 20px; }
+        .btn-danger:hover { background: #ffe5e5; }
+        .btn-save-all { background: #2ecc71; color: white; border: none; font-size: 18px; font-weight: bold; margin-top: 25px; box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3); padding: 18px; }
         .btn-save-all:hover { background: #27ae60; }
-        .input-group { margin-bottom: 15px; text-align: left; }
-        label { display: block; margin-bottom: 6px; color: #34495e; font-weight: 600; font-size: 14px; }
-        input, select { width: 100%; padding: 12px; border: 2px solid #dce4ec; border-radius: 10px; font-size: 16px; outline: none; }
-        input:focus, select:focus { border-color: #0066cc; }
-        .table-container { overflow-x: auto; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; border: 1px solid #e2e8f0; text-align: left; }
-        th { background-color: #f8fafc; color: #475569; }
+
+        /* Енгізу өрістері */
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; color: #4a5c6d; font-weight: 600; font-size: 14px; }
+        input, select { width: 100%; padding: 14px; border: 2px solid #e2eaf2; border-radius: 12px; font-size: 16px; color: #2c3e50; outline: none; background: #fafbfc; transition: all 0.2s; }
+        input:focus, select:focus { border-color: #1e62d0; background: #ffffff; box-shadow: 0 0 0 4px rgba(30,62,208,0.1); }
+
+        /* Журналдың үстіңгі панелі (Мұғалім бөлмесіндегі виджеттер) */
+        .dashboard-header { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 20px; 
+            margin-bottom: 25px; 
+            text-align: left;
+        }
+        .info-box { 
+            flex: 1; 
+            min-width: 250px; 
+            background: #f5f9fe; 
+            padding: 20px; 
+            border-radius: 16px; 
+            border: 1px solid #e1eefa;
+        }
+        .info-box h3 { color: #1a4da1; font-size: 18px; margin-bottom: 10px; }
+        .info-box p { font-size: 14px; color: #647787; margin-bottom: 6px; }
+
+        /* Үлкен Көрнекі Кесте */
+        .table-container { overflow-x: auto; margin-top: 25px; border-radius: 16px; border: 1px solid #e2eaf2; box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
+        table { width: 100%; border-collapse: collapse; background: white; text-align: left; min-width: 500px; }
+        th, td { padding: 16px 20px; border-bottom: 1px solid #eef2f6; font-size: 16px; }
+        th { background-color: #f4f8fd; color: #5c6e80; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f9fbfd; }
+
+        /* Рөлдер мен анимациялар */
         .view { display: none; }
-        .active { display: block; }
-        .alert { padding: 12px; background-color: #d4edda; color: #155724; border-radius: 8px; margin-bottom: 15px; font-size: 14px; }
-        .loader { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); border-radius:24px; justify-content:center; align-items:center; z-index:10; font-weight:bold; color:#0066cc; font-size: 18px; }
-        .grade-select { width: 100%; padding: 6px; font-size: 14px; border: 2px solid #dce4ec; border-radius: 6px; }
-        .live-badge { display: inline-block; padding: 4px 8px; background: #ffeaa7; color: #d63031; font-size: 11px; font-weight: bold; border-radius: 5px; margin-bottom: 15px; animation: blink 1.5s infinite; }
-        .qr-box { display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        #qrcode { margin: 15px 0; padding: 10px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        @keyframes blink { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        .active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .alert { padding: 14px; background-color: #e8fcf0; color: #1e7e43; border: 1px solid #cbf6dd; border-radius: 12px; margin-bottom: 20px; font-size: 15px; font-weight: 600; }
+        .loader { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); border-radius:24px; justify-content:center; align-items:center; z-index:10; font-weight:700; color:#1e62d0; font-size: 18px; }
+        .grade-select { width: 140px; padding: 8px 12px; font-size: 15px; border: 2px solid #e2eaf2; border-radius: 8px; font-weight: 600; background-color: #ffffff; }
+        
+        .live-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #fff9e6; color: #d97706; font-size: 12px; font-weight: 700; border-radius: 20px; margin-bottom: 20px; border: 1px solid #fef3c7; }
+        .live-badge::before { content: ''; display: inline-block; width: 8px; height: 8px; background: #eab308; border-radius: 50%; animation: pulse 1.2s infinite; }
+        
+        /* QR-код виджеті */
+        .qr-box { 
+            width: 220px; 
+            background: #ffffff; 
+            padding: 15px; 
+            border-radius: 16px; 
+            border: 1px solid #e1eefa; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(30,98,208,0.03);
+        }
+        #qrcode { margin-top: 10px; padding: 5px; background: white; }
+
+        @keyframes pulse { 0% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.8); opacity: 0.5; } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 class="logo">BAGALAU</h1>
+<div id="mainContainer" class="container">
+    <h1 class="logo">Bagalau</h1>
 
     <div class="card">
-        <div id="loader" class="loader">Гугл Кестемен байланыс жасалуда...</div>
+        <div id="loader" class="loader">🔄 Сынхрондау жүруде...</div>
         
         <div id="roleSelectionView" class="view active">
-            <h2 class="title">Бағалау Жүйесі</h2>
-            <p class="subtitle">Жалғастыру үшін батырманы басыңыз</p>
-            <button class="btn btn-primary" onclick="switchView('teacherRegView')"><span>👩‍🏫</span> Мұғалім ретінде журнал құру</button>
+            <h2 class="title">Электронды Журнал</h2>
+            <p class="subtitle">Бастау үшін төмендегі батырманы басыңыз</p>
+            <button class="btn btn-primary" onclick="switchView('teacherRegView')"><span>👩‍🏫</span> Жаңа журнал құру</button>
         </div>
 
         <div id="teacherRegView" class="view">
-            <h2 class="title">Журнал құру</h2>
-            <p class="subtitle">Мәліметтерді енгізіңіз</p>
-            <div class="input-group"><label>Мұғалімнің аты-жөні:</label><input type="text" id="teacherName" placeholder="Аты-жөніңіз"></div>
-            <div class="input-group"><label>Пән атауы:</label><input type="text" id="subjectName" placeholder="Мысалы: Физика"></div>
-            <div class="input-group"><label>Оқушы санының лимиті:</label><input type="number" id="maxStudents" value="15"></div>
-            <button class="btn btn-primary" onclick="createJournal()">Журналды бастау</button>
+            <h2 class="title">Журнал параметрлері</h2>
+            <p class="subtitle">Сабақ мәліметтерін толтырыңыз</p>
+            <div class="input-group"><label>Мұғалімнің аты-жөні:</label><input type="text" id="teacherName" placeholder="Мысалы: Саматова А.С."></div>
+            <div class="input-group"><label>Пән атауы:</label><input type="text" id="subjectName" placeholder="Мысалы: Информатика"></div>
+            <div class="input-group"><label>Оқушы санының лимиті:</label><input type="number" id="maxStudents" value="20"></div>
+            <button class="btn btn-primary" onclick="createJournal()">Журналды іске қосу</button>
             <button class="btn btn-danger" onclick="switchView('roleSelectionView')">Артқа</button>
         </div>
 
         <div id="teacherDashboardView" class="view">
-            <h2 class="title" id="dashTeacherTitle">Журнал</h2>
-            <p class="subtitle" id="dashSubjectTitle">Пән: </p>
+            <div class="live-badge">Автоматты байланыс қосулы: оқушылар тізімі өзі жаңарады</div>
             <div id="teacherAlert" class="alert" style="display:none;"></div>
             
-            <div class="live-badge">🔴 АВТО-ЖАҢАРТУ: Оқушылар QR арқылы кіргенде тізімге бірден қосылады</div>
-
-            <div class="qr-box">
-                <p style="font-weight: bold; font-size: 15px;">Сынып коды: <span id="classCodeDisplay" style="color:#0066cc; font-size: 22px;">---</span></p>
-                <div id="qrcode"></div>
-                <p style="font-size:12px; color:#7f8c8d; text-align:center;">Оқушылар осы QR-кодты сканерлеп, өз есімдерін жазып тіркеледі.</p>
+            <div class="dashboard-header">
+                <div class="info-box">
+                    <h3 id="dashSubjectTitle">Пән: -</h3>
+                    <p id="dashTeacherTitle">Мұғалім: -</p>
+                    <p style="font-weight: 700; color: #1e62d0; font-size: 16px; margin-top: 10px;">
+                        Сынып коды: <span id="classCodeDisplay" style="font-size: 20px; letter-spacing: 1px;">---</span>
+                    </p>
+                </div>
+                
+                <div class="qr-box">
+                    <span style="font-size: 12px; font-weight: 700; color: #4a5c6d;">📲 ОҚУШЫЛАР ҮШІН QR:</span>
+                    <div id="qrcode"></div>
+                </div>
             </div>
 
             <div class="table-container">
                 <table>
-                    <thead><tr><th>Оқушы аты-жөні</th><th>Бағасы</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th style="width: 60%;">Оқушының аты-жөні (Тегі, Аты)</th>
+                            <th style="width: 40%;">Сабақ бағасы</th>
+                        </tr>
+                    </thead>
                     <tbody id="teacherTableBody"></tbody>
                 </table>
             </div>
 
             <button id="btnSaveAll" class="btn btn-save-all" onclick="saveAllGrades()" style="display: none;">💾 Журналды сақтау және жіберу</button>
-            <button class="btn btn-danger" onclick="exitDashboard()">Шығу</button>
+            <button class="btn btn-danger" onclick="exitDashboard()">Журналдан шығу</button>
         </div>
 
         <div id="studentLoginView" class="view">
-            <h2 class="title">Сыныпқа қосылу</h2>
-            <p class="subtitle" id="studentClassInfo">Журналға тіркелу</p>
-            <div class="input-group"><label>Сіздің аты-жөніңіз (Тегі, Аты):</label><input type="text" id="studentName" placeholder="Мысалы: Ахметов Әлішер"></div>
+            <h2 class="title">Сабаққа тіркелу</h2>
+            <p class="subtitle" id="studentClassInfo">Журнал анықталуда...</p>
+            <div class="input-group"><label>Толық аты-жөніңізді енгізіңіз:</label><input type="text" id="studentName" placeholder="Мысалы: Аманжол Азамат"></div>
             <button class="btn btn-primary" onclick="joinClass()">Сыныпқа кіру</button>
         </div>
 
         <div id="studentDashboardView" class="view">
             <h2 class="title" id="studentWelcomeText">Оқушы</h2>
-            <div class="live-badge">🔴 БАҒАҢЫЗ АВТОМАТТЫ ТҮРДЕ ЖАҢАРТЫЛЫП ТҰР</div>
+            <div class="live-badge" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">Бағаңыз қойылса, экранда бірден шығады</div>
             
-            <div style="background: #f0f7ff; padding: 25px; border-radius: 16px; margin: 20px 0; border: 2px dashed #0066cc;">
-                <h3 id="viewSubject">Пән: -</h3>
-                <p style="font-size: 14px; color: gray; margin-top:5px;">Мұғалім: <span id="viewTeacher">-</span></p>
-                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #e1f0ff;">
-                <p style="font-size: 20px; font-weight: bold;">Сіздің бағаңыз: <span id="myGrade" style="font-size: 36px; color: #e67e22; margin-left: 10px;">-</span></p>
+            <div style="background: #f0f7ff; padding: 30px; border-radius: 20px; margin: 25px 0; border: 2px dashed #1e62d0; text-align: center;">
+                <h3 id="viewSubject" style="color:#1a4da1; font-size: 22px;">Пән: -</h3>
+                <p style="font-size: 15px; color: #647787; margin-top:6px;">Мұғалім: <span id="viewTeacher" style="font-weight:600; color:#2c3e50;">-</span></p>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #dbe9f9;">
+                <p style="font-size: 18px; font-weight: 600; color:#4a5c6d;">Сіздің ағымдағы бағаңыз:</p>
+                <div id="myGrade" style="font-size: 54px; font-weight: 900; color: #7a8b9a; margin-top: 10px;">-</div>
             </div>
         </div>
 
@@ -118,22 +223,29 @@
     let currentStudent = '';
     let autoRefreshTimer = null;
     let localStudentsData = [];
-    let qrGenerator = null;
 
-    // СЕРВЕРДЕН СІЛТЕМЕНІ ТЕКСЕРУ (QR АРҚЫЛЫ КІРГЕНДІ АНЫҚТАУ)
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         const urlCode = urlParams.get('code');
         
         if (urlCode) {
             currentClassCode = urlCode;
-            document.getElementById('studentClassInfo').innerText = `Сынып коды: ${urlCode}. Атыңызды жазыңыз.`;
+            document.getElementById('studentClassInfo').innerText = `Сынып коды: ${urlCode}. Тізімге қосылу үшін атыңызды жазыңыз.`;
             switchView('studentLoginView');
         }
     };
 
     function switchView(viewId) {
         stopAutoRefresh();
+        const container = document.getElementById('mainContainer');
+        
+        // Мұғалім журналы ашылғанда контейнерді үлкейту
+        if(viewId === 'teacherDashboardView') {
+            container.classList.add('wide');
+        } else {
+            container.classList.remove('wide');
+        }
+
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
         
@@ -207,16 +319,15 @@
         document.getElementById('dashTeacherTitle').innerText = "Мұғалім: " + currentTeacher;
         document.getElementById('dashSubjectTitle').innerText = "Пән: " + currentSubject;
 
-        // Ағымдағы сайттың сілтемесін алып, QR код жасаймыз
         const currentDomain = window.location.href.split('?')[0];
         const qrLink = `${currentDomain}?code=${currentClassCode}`;
 
         document.getElementById("qrcode").innerHTML = "";
-        qrGenerator = new QRCode(document.getElementById("qrcode"), {
+        new QRCode(document.getElementById("qrcode"), {
             text: qrLink,
-            width: 180,
-            height: 180,
-            colorDark : "#000000",
+            width: 140,
+            height: 140,
+            colorDark : "#1a4da1",
             colorLight : "#ffffff",
             correctLevel : QRCode.CorrectLevel.H
         });
@@ -231,7 +342,7 @@
             const saveBtn = document.getElementById('btnSaveAll');
 
             if(!data || data.length === 0 || data.error) {
-                tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:gray;">Оқушылар QR-кодты сканерлеп қосылғанда осы жерге шығады...</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:#7a8b9a; padding: 30px;">Оқушылар QR-кодты сканерлеп қосылғанда осы жерге автоматты түрде шығады...</td></tr>`;
                 saveBtn.style.display = "none";
                 localStudentsData = [];
                 return;
@@ -253,7 +364,7 @@
                     });
                     selectHtml += `</select>`;
 
-                    tr.innerHTML = `<td style="font-weight:600;">${student.name}</td><td>${selectHtml}</td>`;
+                    tr.innerHTML = `<td style="font-weight:600; color: #2c3e50;">${student.name}</td><td>${selectHtml}</td>`;
                     tbody.appendChild(tr);
                 });
             }
@@ -281,8 +392,6 @@
 
         toggleLoader(false);
         const alertBox = document.getElementById('teacherAlert');
-        alertBox.style.backgroundColor = "#d4edda";
-        alertBox.style.color = "#155724";
         alertBox.innerText = `👍 Барлық бағалар сәтті сақталып, оқушыларға жіберілді!`;
         alertBox.style.display = 'block';
         
